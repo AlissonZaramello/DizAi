@@ -1,0 +1,39 @@
+:root {
+    --vermelho-escuro: #BE1E2D ;
+    --vermelho-claro: #F2293D;
+    --preto: #1C1C1C; 
+    --branco: #F2F2F2 ;
+}
+.area-header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    position: fixed;
+    width: 100%;
+    height: 100px;
+}
+.logo_header{
+    width: 125px;
+}
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+.area{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--preto);
+    text-transform: uppercase;
+    font-size: 15px;
+}
+.Button_Op{
+    padding: 20px;
+    text-decoration: none;
+    color: #34382D;
+}
+.Button_Op:hover{
+    text-decoration:underline;
+}

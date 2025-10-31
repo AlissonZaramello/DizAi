@@ -1,0 +1,85 @@
+:root {
+    --Verde-Agua-Claro: #04D9B2;
+    --Verde-Agua: #F2293D;
+    --azul-claro: #A0F2CC;
+    --branco: #F2F1F0;
+    --verde-azul-escuro: #17A68C;
+}
+
+.Fundo_Perfil {
+    width: 100%;
+    height: 650px;
+    background-image:url(../../assets/img/3786391_78792\ 1.svg);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.Painel{
+    display: flex;
+    justify-content: center;
+    width: 85%;
+    gap: 20%;
+    max-width: 800px;
+    padding-top: 175px;
+    margin: auto;
+}
+.Tabela_Perfil{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 250%;
+    height: 350px;
+    border-radius: 20px;
+    background: var(--azul-claro);
+}
+.Dados_Perfil{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 10px;
+}
+.Dados{
+    border-radius: 10px;
+    height: 40px;
+    width: 300px;
+    background: var(--verde-azul-escuro);
+    border: 1px solid var(--verde-azul-escuro);
+    padding-left: 10px;
+    font-size: 0.85em;
+    color: #F2F1F0;
+}
+.Edit_Button{
+    border-radius: 10px;
+    background: var(--verde-azul-escuro);
+    border: 2px solid #000;
+}
+.Alterar-botao-area{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+.Alterar-botao{
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    border: 2px solid var(--verde-azul-escuro);
+    background: var(--verde-azul-escuro);
+    color: var(--branco);
+    height: 40px;
+    border-radius: 10px;
+    transition: 0.35s;
+}
+.Alterar-botao:hover{
+    background-color: var(--Verde-Agua-Claro);
+    color: black;
+}
+.Alterar-botao:active{
+    transition: 0.001s;
+    height: 40px;
+    width: 40%;
+}
