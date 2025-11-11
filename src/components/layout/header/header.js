@@ -19,7 +19,7 @@ const Header = () => {
                         <Link className='Button_Op' to="/sistema">
                             Reclame Aqui
                         </Link>
-                        <Link className='Button_Op' to="/perfil">
+                        <Link className='Button_Op' to="/perfil/usuario">
                             Perfil
                         </Link>
                         <Link className='Button_Op' to="/">

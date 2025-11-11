@@ -64,7 +64,7 @@ const Resultados = () => {
               resultadosFiltrados.map((usuario) => (
                 <Link
                   key={usuario.id}
-                  to={`/empresa/${usuario.id}`} // 👈 Rota dinâmica
+                  to={`/empresa/${usuario.id}`}
                   className="usuario-card"
                 >
                   <img

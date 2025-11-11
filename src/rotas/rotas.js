@@ -5,7 +5,8 @@ import Cadastro from '../paginas/cadastro-Usuario/cadastro_Usuario'
 import Home from '../paginas/Home/home'
 import PrivateRoute from './privateRotas'
 import Sistema from '../paginas/Sistema/sistema'
-import Perfil from '../paginas/Perfil/perfil'
+import PerfilU from '../paginas/Perfil/perfil'
+import PerfilE from '../paginas/Perfil_Empresa/perfil_Empresa'
 import Cadastro_Empresa from '../paginas/cadastro-Empresa/cadastro-Empresa'
 import Resultados from '../paginas/Resultados/resultados'
 import Empresa from '../paginas/Empresa/empresa'
@@ -19,7 +20,8 @@ const Rotas = () => {
         <Route element={<PrivateRoute/>}>
           <Route path='/home' element={<Home/>}/>
           <Route path='/sistema' element={<Sistema/>}/>
-          <Route path='/perfil' element={<Perfil/>}/>
+          <Route path='/perfil/usuario' element={<PerfilU/>}/>
+          <Route path='/perfil/empresa' element={<PerfilE/>}/>
           <Route path='/resultados' element={<Resultados/>}/>
           <Route path='/empresa/:id' element={<Empresa/>}/>
         </Route>

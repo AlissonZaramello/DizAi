@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from "react-router-dom";
 import './empresa.css'
 import { useParams } from 'react-router-dom'
 
@@ -13,6 +14,8 @@ const empresas = [
       { titulo: "Meu Nintendo Online Não...", status: "Respondido" },
       { titulo: "A Entrega Foi Horrível!!!", status: "Não Respondido" },
     ],
+    imagem:
+        "https://upload.wikimedia.org/wikipedia/commons/0/0d/Nintendo.svg",
   },
   {
     id: "2",
@@ -24,6 +27,8 @@ const empresas = [
       { titulo: "Adoro o PS5", status: "Respondido" },
       { titulo: "Controle com defeito", status: "Não Respondido" },
     ],
+    imagem:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Sony_logo.svg/1920px-Sony_logo.svg.png",
   },
 ];
 
@@ -36,13 +41,15 @@ const Empresa = () => {
       <div className="empresa-container">
         <div className='Painel-empresa'>
           <div className="empresa-header">
-            <img className="Logo" alt={empresa.nome} />
+            <img className="Logo" src={empresa.imagem} alt={empresa.nome} />
             <div>
               <h1>{empresa.nome}</h1>
               <h2>{empresa.setor}</h2>
               <p>{empresa.descricao}</p>
             </div>
-            <button>Avaliar</button>
+            <Link to={`/sistema`}>
+              <button>Avaliar</button>
+            </Link>
           </div>
           <div className='detalhes-empresa'>
             <div className="empresa-status">

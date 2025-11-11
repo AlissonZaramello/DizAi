@@ -139,7 +139,7 @@ export default function Perfil() {
       <Table className="Avaliacao-Pesona">
         <TableHeader>
           <TableRow>
-            <TableHead className="Titulo-Tabela">Empresa</TableHead>
+            <TableHead className="Titulo-Tabela">Titulo/Razão</TableHead>
             <TableHead className="Titulo-Tabela">Avaliação</TableHead>
           </TableRow>
         </TableHeader>
