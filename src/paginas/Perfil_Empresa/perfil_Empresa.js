@@ -9,7 +9,7 @@ import {
   TableRow,
 } from "../../components/ui/table";
 import { BsPencilSquare } from "react-icons/bs";
-import "./perfil_Empresa.css";
+import "./perfil_empresa.css";
 
 export default function Perfil_Empresa() {
   const [editMode, setEditMode] = useState({

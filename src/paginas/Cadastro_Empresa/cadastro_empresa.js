@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import './cadastro-Empresa.css';
+import './cadastro_empresa.css';
 import logo from '../../assets/img/LogoSistema Fundo_Transparenrte.png';
 
 const CadastroEmpresa = () => {
@@ -131,7 +131,7 @@ const CadastroEmpresa = () => {
 
             <div className='tem-cadastro'>
               Cadastrar como Usuário?
-              <Link className='login-link' to='/cadastro'>
+              <Link className='login-link' to='/cadastro/usuario'>
                 Clique aqui.
               </Link>
             </div>
