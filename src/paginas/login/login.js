@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import './login.css';
 import logo from '../../assets/img/logo.png';
 import { API_URL } from '../../config/config';
+import { salvarUsuario } from "../../utils/auth";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -32,13 +33,7 @@ const Login = () => {
       }
 
       const user = await response.json();
-
-      localStorage.setItem("usuarioLogado", JSON.stringify({
-        id: user.id,
-        nome: user.nome,
-        email: user.email,
-        token: user.token || null
-      }));
+      salvarUsuario(user);
 
       navigate("/home");
 

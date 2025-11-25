@@ -7,6 +7,8 @@ import empresaImg from "../../assets/img/empresa.png";
 import { BsPencilSquare } from "react-icons/bs";
 import { API_URL } from '../../config/config';
 import './perfil.css';
+import { salvarUsuario } from "../../utils/auth";
+
 export default function Perfil() {
   const [editMode, setEditMode] = useState(false);
 
@@ -14,22 +16,27 @@ export default function Perfil() {
     nome: "",
     email: "",
     senha: "",
-    img: ""
+    img: "",
+    cnpj: "",
+    setor: "",
+    descricao: ""
   });
 
   const [mensagem, setMensagem] = useState('');
   const [tipo, setTipo] = useState(null);
   const [id, setId] = useState(null);
+  const [empresaId, setEmpresaId] = useState(null);
   const [feedbacks, setFeedbacks] = useState([]);
 
   useEffect(() => {
     const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
-    const empresa = JSON.parse(localStorage.getItem("empresaLogado"));
 
-    if (usuario) {
-      setTipo("usuario");
-      setId(usuario.id);
+    if (!usuario) return;
 
+    setTipo(usuario.tipo);
+    setId(usuario.id);
+
+    if (usuario.tipo === "usuario") {
       fetch(`${API_URL}/usuarios/${usuario.id}`)
         .then(res => res.json())
         .then(data => {
@@ -37,24 +44,33 @@ export default function Perfil() {
             nome: data.nome,
             email: data.email,
             senha: "",
-            img: usuarioImg
+            img: usuarioImg,
+            cnpj: "",
+            setor: "",
+            descricao: ""
           });
         });
     }
 
-    if (empresa) {
-      setTipo("empresa");
-      setId(empresa.id);
+    if (usuario.tipo === "empresa") {
+      setEmpresaId(usuario.empresa_id);
 
-      fetch(`${API_URL}/empresas/${empresa.id}`)
+      fetch(`${API_URL}/empresas/${usuario.empresa_id}`)
         .then(res => res.json())
-        .then(data => {
-          setFormData({
-            nome: data.nome,
-            email: data.email,
-            senha: "",
-            img: empresaImg
-          });
+        .then(empresa => {
+          fetch(`${API_URL}/usuarios/${usuario.id}`)
+            .then(res => res.json())
+            .then(user => {
+              setFormData({
+                nome: user.nome,
+                email: user.email,
+                senha: "",
+                img: empresaImg,
+                cnpj: empresa.cnpj,
+                setor: empresa.setor,
+                descricao: empresa.descricao
+              });
+            });
         });
     }
   }, []);
@@ -68,10 +84,10 @@ export default function Perfil() {
         if (tipo === "usuario") {
           setFeedbacks(data.filter(fb => fb.usuario_id === id));
         } else {
-          setFeedbacks(data.filter(fb => fb.empresa_id === id));
+          setFeedbacks(data.filter(fb => fb.empresa_id === empresaId));
         }
       });
-  }, [id, tipo]);
+  }, [id, tipo, empresaId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -80,42 +96,54 @@ export default function Perfil() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!id || !tipo) return;
 
-    const rota = tipo === "usuario" ? "usuarios" : "empresas";
+    const bodyToSend = {
+      nome: formData.nome,
+      email: formData.email
+    };
 
-    const bodyToSend = { ...formData };
-    if (formData.senha.trim() === "") {
-      delete bodyToSend.senha;
+    if (formData.senha.trim() !== "") {
+      bodyToSend.senha = formData.senha;
     }
 
-    const response = await fetch(`${API_URL}/${rota}/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(bodyToSend)
-    });
+    const rota = tipo === "usuario" ? "usuarios" : "usuarios";
+    
+    let response;
+    if (tipo === "usuario"){
+      response = await fetch(`${API_URL}/usuarios/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(bodyToSend)
+      });
+    }
 
+    else if (tipo === "empresa") {
+      response = await fetch(`${API_URL}/empresas/${empresaId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nome: bodyToSend.nome,
+          email: bodyToSend.email,
+          senha: bodyToSend.senha,
+          cnpj: formData.cnpj,
+          setor: formData.setor,
+          descricao: formData.descricao
+        })
+      });
+    }
     if (!response.ok) {
-      setMensagem("Erro ao atualizar");
-      return;
+        setMensagem("Erro ao atualizar");
+        return;
     }
-
     const updated = await response.json();
 
-    if (tipo === "usuario") {
-        
-      localStorage.setItem("usuarioLogado", JSON.stringify({
-        id: updated.id,
-        nome: updated.nome,
-        email: updated.email
-      }));
-    } else {
-      localStorage.setItem("empresaLogado", JSON.stringify({
-        id: updated.id,
-        nome: updated.nome,
-        email: updated.email,
-      }));
-    }
+    salvarUsuario({
+      id: updated.id,
+      nome: updated.nome,
+      email: updated.email,
+      tipo,
+      empresa_id: empresaId
+    });
 
     setMensagem("Dados atualizados");
     setEditMode(false);
@@ -128,11 +156,21 @@ export default function Perfil() {
       <div className="Painel">
         <div className="Perfil-Card">
           <img className="Img_Perfil" src={formData.img} alt="Foto" />
+
           <div className="Perfil-Info">
             {!editMode && (
               <>
                 <div className="Perfil-Nome">{formData.nome}</div>
+
                 <p className="Perfil-Label"><strong>Email:</strong> {formData.email}</p>
+
+                {tipo === "empresa" && (
+                  <>
+                    <p className="Perfil-Label"><strong>CNPJ:</strong> {formData.cnpj}</p>
+                    <p className="Perfil-Label"><strong>Setor:</strong> {formData.setor}</p>
+                    <p className="Perfil-Label"><strong>Descrição:</strong> {formData.descricao}</p>
+                  </>
+                )}
 
                 <button
                   type="button"
@@ -155,22 +193,28 @@ export default function Perfil() {
                 <label>Senha</label>
                 <input className="Dados" type="password" name="senha" value={formData.senha} onChange={handleChange} />
 
-                {mensagem && (
-                  <p className="Mensagem-Sucesso">{mensagem}</p>
+                {tipo === "empresa" && (
+                  <>
+                    <label>CNPJ</label>
+                    <input className="Dados" name="cnpj" value={formData.cnpj} onChange={handleChange} />
+
+                    <label>Setor</label>
+                    <input className="Dados" name="setor" value={formData.setor} onChange={handleChange} />
+
+                    <label>Descrição</label>
+                    <textarea className="Dados" name="descricao" value={formData.descricao} onChange={handleChange} />
+                  </>
                 )}
+
+                {mensagem && <p className="Mensagem-Sucesso">{mensagem}</p>}
 
                 <div className="Alterar-botao-area">
                   <button type="submit" className="Alterar-botao">Salvar</button>
                 </div>
 
-                <button
-                  type="button"
-                  className="Edit_Profile_Button"
-                  onClick={() => setEditMode(false)}
-                >
+                <button type="button" className="Edit_Profile_Button" onClick={() => setEditMode(false)}>
                   Cancelar
                 </button>
-
               </form>
             )}
           </div>

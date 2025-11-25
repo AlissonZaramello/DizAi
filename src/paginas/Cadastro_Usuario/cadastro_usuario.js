@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import './cadastro_usuario.css';
 import logo from '../../assets/img/logo.png';
 import { API_URL } from '../../config/config';
+import { salvarUsuario } from "../../utils/auth";
 
 const CadastroUsuario = () => {
   const navigate = useNavigate();
@@ -43,16 +44,10 @@ const CadastroUsuario = () => {
         return;
       }
 
-      const usuarioCriado = await response.json();
+      const usuario = await response.json();
 
-      console.log("Usuário criado:", usuarioCriado);
-
-      localStorage.setItem("usuarioLogado", JSON.stringify({
-        id: usuarioCriado.id,
-        nome: usuarioCriado.nome,
-        email: usuarioCriado.email,
-        token: usuarioCriado.token || null
-      }));
+      console.log("Usuário criado:", usuario);
+      salvarUsuario(usuario);
 
       alert("Cadastro realizado com sucesso!");
       navigate("/home");
